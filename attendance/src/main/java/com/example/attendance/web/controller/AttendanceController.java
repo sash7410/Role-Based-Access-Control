@@ -2,9 +2,7 @@ package com.example.attendance.web.controller;
 
 import com.example.attendance.domain.Attendance;
 import com.example.attendance.service.AttendanceService;
-import com.example.attendance.service.SecurityMiddleware;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,10 +31,10 @@ public class AttendanceController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateAttendance(@PathVariable Long id, @RequestBody Attendance attendance, @RequestParam Long userId) {
+    @PutMapping("/{attendanceId}")
+    public ResponseEntity<?> updateAttendance(@PathVariable Long attendanceId, @RequestBody Attendance attendance, @RequestParam Long userId) {
         try {
-            Optional<Attendance> updatedAttendance = attendanceService.updateAttendance(userId, id, attendance);
+            Optional<Attendance> updatedAttendance = attendanceService.updateAttendance(userId, attendanceId, attendance);
             return updatedAttendance.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
         } catch (SecurityException e) {
             return ResponseEntity.status(403).body("Access Denied");

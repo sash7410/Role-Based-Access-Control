@@ -1,7 +1,5 @@
 package com.example.user.service;
-//
-//import com.example.role.domain.Role;
-//import com.example.role.repository.RoleRepository;
+
 import com.example.user.domain.Role;
 import com.example.user.domain.User;
 import com.example.user.repository.RoleRepository;
@@ -48,11 +46,11 @@ public class UserServiceImpl {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> getUserById(Long userId) {
+        return userRepository.findById(userId);
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 }

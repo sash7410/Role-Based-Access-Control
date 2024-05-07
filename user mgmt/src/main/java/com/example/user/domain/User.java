@@ -1,6 +1,5 @@
 package com.example.user.domain;
 
-//import com.example.role.domain.Role;
 import com.example.user.constant.Constants;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,7 +24,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     private String username;
     private String password;
 

@@ -20,14 +20,14 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        Set<Long> roleIds = user.getRoles().stream().map(Role::getId).collect(Collectors.toSet());
+        Set<Long> roleIds = user.getRoles().stream().map(Role::getRoleId).collect(Collectors.toSet());
         User createdUser = userService.createUserWithRoles(user, roleIds);
         return ResponseEntity.ok(createdUser);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+        return userService.getUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -37,17 +37,17 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        Set<Long> roleIds = user.getRoles().stream().map(Role::getId).collect(Collectors.toSet());
-        return userService.updateUserWithRoles(id, user, roleIds)
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User user) {
+        Set<Long> roleIds = user.getRoles().stream().map(Role::getRoleId).collect(Collectors.toSet());
+        return userService.updateUserWithRoles(userId, user, roleIds)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
 }

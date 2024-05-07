@@ -44,7 +44,7 @@ public class UserRoleService {
 @NoArgsConstructor
 @AllArgsConstructor
 class User {
-    private Long id;
+    private Long userId;
     private String username;
     private String password;
     private Set<Role> roles;
@@ -58,7 +58,7 @@ class User {
 @NoArgsConstructor
 @AllArgsConstructor
 class Role {
-    private Long id;
+    private Long roleId;
     private String name;
     private Set<Permission> permissions;
 }
@@ -69,7 +69,7 @@ class Role {
 @NoArgsConstructor
 @AllArgsConstructor
 class Permission {
-    private Long id;
+    private Long permissionId;
     private String permissionName;
 }
 

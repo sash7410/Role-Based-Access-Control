@@ -26,7 +26,7 @@ public class RolePermissionService {
     @Transactional
     public Role createRole(Role role) {
         Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(
-                role.getPermissions().stream().map(Permission::getId).collect(Collectors.toList())
+                role.getPermissions().stream().map(Permission::getPermissionId).collect(Collectors.toList())
         ));
         role.setPermissions(permissions);
         return roleRepository.save(role);
@@ -35,7 +35,7 @@ public class RolePermissionService {
     @Transactional
     public Optional<Role> updateRole(Long roleId, Role newRoleData) {
         Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(
-                newRoleData.getPermissions().stream().map(Permission::getId).collect(Collectors.toList())
+                newRoleData.getPermissions().stream().map(Permission::getPermissionId).collect(Collectors.toList())
         ));
 
         return roleRepository.findById(roleId).map(role -> {
@@ -45,16 +45,16 @@ public class RolePermissionService {
         });
     }
 
-    public Optional<Role> getRoleById(Long id) {
-        return roleRepository.findById(id);
+    public Optional<Role> getRoleById(Long roleId) {
+        return roleRepository.findById(roleId);
     }
 
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
-    public void deleteRole(Long id) {
-        roleRepository.deleteById(id);
+    public void deleteRole(Long roleId) {
+        roleRepository.deleteById(roleId);
     }
 
     @Transactional
@@ -62,8 +62,8 @@ public class RolePermissionService {
         return permissionRepository.save(permission);
     }
 
-    public Optional<Permission> getPermissionById(Long id) {
-        return permissionRepository.findById(id);
+    public Optional<Permission> getPermissionById(Long permissionId) {
+        return permissionRepository.findById(permissionId);
     }
 
     public List<Permission> getAllPermissions() {
@@ -71,15 +71,15 @@ public class RolePermissionService {
     }
 
     @Transactional
-    public Optional<Permission> updatePermission(Long id, Permission newPermission) {
-        return permissionRepository.findById(id).map(permission -> {
+    public Optional<Permission> updatePermission(Long permissionId, Permission newPermission) {
+        return permissionRepository.findById(permissionId).map(permission -> {
             permission.setPermissionName(newPermission.getPermissionName());
             return permissionRepository.save(permission);
         });
     }
 
     @Transactional
-    public void deletePermission(Long id) {
-        permissionRepository.deleteById(id);
+    public void deletePermission(Long permissionId) {
+        permissionRepository.deleteById(permissionId);
     }
 }

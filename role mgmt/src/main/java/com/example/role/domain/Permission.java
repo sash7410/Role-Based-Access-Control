@@ -1,11 +1,6 @@
 package com.example.role.domain;
 
-import com.example.role.constant.Constants;
-import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * Simple JavaBean domain object representing a permission.
@@ -18,16 +13,16 @@ import java.util.Set;
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long permissionId;
     private String permissionName;
 
     // Getters and setters
-    public Long getId() {
-        return id;
+    public Long getPermissionId() {
+        return permissionId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPermissionId(Long id) {
+        this.permissionId = id;
     }
 
     public String getPermissionName() {
