@@ -2,15 +2,16 @@ package com.example.attendance.service;
 
 import com.example.attendance.domain.Attendance;
 import com.example.attendance.repository.AttendanceRepository;
+import com.example.attendance.web.dto.requestDto.AttendanceRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AttendanceService {
+
     @Autowired
     private AttendanceRepository attendanceRepository;
 
@@ -18,24 +19,25 @@ public class AttendanceService {
     private SecurityMiddleware securityMiddleware;
 
     @Transactional
-    public Attendance markAttendance(Long userId, Attendance attendance) {
+    public Attendance markAttendance(Long userId, AttendanceRequestDTO attendanceDTO) {
         if (!securityMiddleware.hasPermission(userId, "mark_attendance")) {
             throw new SecurityException("Access Denied: Insufficient Permissions");
         }
+        Attendance attendance = Attendance.builder().userId(userId).date(attendanceDTO.getDate()).status(attendanceDTO.isStatus()).build();
         return attendanceRepository.save(attendance);
     }
 
     @Transactional
-    public Optional<Attendance> updateAttendance(Long userId, Long attendanceId, Attendance newAttendance) {
+    public Attendance updateAttendance(Long userId, Long attendanceId, AttendanceRequestDTO attendanceDTO) {
         if (!securityMiddleware.hasPermission(userId, "update_attendance")) {
             throw new SecurityException("Access Denied: Insufficient Permissions");
         }
-        return attendanceRepository.findById(attendanceId)
-                .map(attendance -> {
-                    attendance.setDate(newAttendance.getDate());
-                    attendance.setStatus(newAttendance.isStatus());
-                    return attendanceRepository.save(attendance);
-                });
+        Attendance attendance = attendanceRepository.findById(attendanceId)
+                .orElseThrow(() -> new IllegalArgumentException("Attendance not found"));
+
+        attendance.setDate(attendanceDTO.getDate());
+        attendance.setStatus(attendanceDTO.isStatus());
+        return attendanceRepository.save(attendance);
     }
 
     public List<Attendance> getAllAttendance(Long userId) {
@@ -44,6 +46,4 @@ public class AttendanceService {
         }
         return attendanceRepository.findAll();
     }
-
-
 }

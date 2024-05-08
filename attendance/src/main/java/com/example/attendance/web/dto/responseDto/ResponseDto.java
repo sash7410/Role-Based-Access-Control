@@ -1,4 +1,4 @@
-package com.example.attendance.web.dto;
+package com.example.attendance.web.dto.responseDto;
 
 import com.example.attendance.web.exception.ExceptionResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;

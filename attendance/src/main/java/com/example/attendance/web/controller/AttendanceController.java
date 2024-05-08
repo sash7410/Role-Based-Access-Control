@@ -2,12 +2,16 @@ package com.example.attendance.web.controller;
 
 import com.example.attendance.domain.Attendance;
 import com.example.attendance.service.AttendanceService;
+import com.example.attendance.web.dto.requestDto.AttendanceRequestDTO;
+import com.example.attendance.web.dto.responseDto.ResponseDto;
+import com.example.attendance.web.exception.ExceptionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Exposes all Attendance - RESTful web services
@@ -22,32 +26,44 @@ public class AttendanceController {
     private AttendanceService attendanceService;
 
     @PostMapping
-    public ResponseEntity<?> markAttendance(@RequestBody Attendance attendance, @RequestParam Long userId) {
+    public ResponseEntity<ResponseDto> markAttendance(@RequestBody AttendanceRequestDTO attendanceDTO, @RequestParam Long userId) {
+        ResponseDto response = new ResponseDto();
         try {
-            Attendance createdAttendance = attendanceService.markAttendance(userId, attendance);
-            return ResponseEntity.ok(createdAttendance);
+            Attendance createdAttendance = attendanceService.markAttendance(userId, attendanceDTO);
+            response.setSuccess(createdAttendance);
+            return ResponseEntity.ok(response);
         } catch (SecurityException e) {
-            return ResponseEntity.status(403).body("Access Denied");
+            ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), HttpStatus.FORBIDDEN.value(), "Access Denied", e.getMessage());
+            response.setError(exceptionResponse);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
     }
 
     @PutMapping("/{attendanceId}")
-    public ResponseEntity<?> updateAttendance(@PathVariable Long attendanceId, @RequestBody Attendance attendance, @RequestParam Long userId) {
+    public ResponseEntity<ResponseDto> updateAttendance(@PathVariable Long attendanceId, @RequestBody AttendanceRequestDTO attendanceDTO, @RequestParam Long userId) {
+        ResponseDto response = new ResponseDto();
         try {
-            Optional<Attendance> updatedAttendance = attendanceService.updateAttendance(userId, attendanceId, attendance);
-            return updatedAttendance.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            Attendance updatedAttendance = attendanceService.updateAttendance(userId, attendanceId, attendanceDTO);
+            response.setSuccess(updatedAttendance);
+            return ResponseEntity.ok(response);
         } catch (SecurityException e) {
-            return ResponseEntity.status(403).body("Access Denied");
+            ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), HttpStatus.FORBIDDEN.value(), "Access Denied", e.getMessage());
+            response.setError(exceptionResponse);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllAttendance(@RequestParam Long userId) {
+    public ResponseEntity<ResponseDto> getAllAttendance(@RequestParam Long userId) {
+        ResponseDto response = new ResponseDto();
         try {
             List<Attendance> attendances = attendanceService.getAllAttendance(userId);
-            return ResponseEntity.ok(attendances);
+            response.setSuccess(attendances);
+            return ResponseEntity.ok(response);
         } catch (SecurityException e) {
-            return ResponseEntity.status(403).body("Access Denied");
+            ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), HttpStatus.FORBIDDEN.value(), "Access Denied", e.getMessage());
+            response.setError(exceptionResponse);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
     }
 }
