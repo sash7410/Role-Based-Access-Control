@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -26,6 +27,6 @@ public class Attendance {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long attendanceId;
     private Long userId;
-    private Date date;
+    private LocalDate date;
     private boolean status;
 }
