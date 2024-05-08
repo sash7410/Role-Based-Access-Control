@@ -1,4 +1,4 @@
-package com.example.user.web.dto;
+package com.example.user.web.dto.responseDto;
 
 //import com.example.role.web.exception.ExceptionResponse;
 import com.example.user.web.exception.ExceptionResponse;
