@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +34,7 @@ public class RolePermissionService {
     public Optional<Role> updateRole(Long roleId, RoleRequestDTO newRoleRequestDTO) {
         return roleRepository.findById(roleId).map(role -> {
             role.setName(newRoleRequestDTO.getName());
-            Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(
-                    newRoleRequestDTO.getPermissionIds().stream().map(Permission::getPermissionId).collect(Collectors.toList())
-            ));
-            role.setPermissions(permissions);
+            role.setPermissions(getPermissions(newRoleRequestDTO));
             return roleRepository.save(role);
         });
     }
@@ -90,8 +86,7 @@ public class RolePermissionService {
     private Role mapRequestDTOToRole(RoleRequestDTO roleRequestDTO) {
         Role role = new Role();
         role.setName(roleRequestDTO.getName());
-        role.setPermissions(new HashSet<>(permissionRepository.findAllById(
-                roleRequestDTO.getPermissionIds().stream().map(Permission::getPermissionId).collect(Collectors.toList()))));
+        role.setPermissions(getPermissions(roleRequestDTO));
         return role;
     }
 
@@ -100,4 +95,11 @@ public class RolePermissionService {
         permission.setPermissionName(permissionRequestDTO.getPermissionName());
         return permission;
     }
+
+    private HashSet<Permission> getPermissions(RoleRequestDTO newRoleRequestDTO) {
+        return new HashSet<>(permissionRepository.findByPermissionNameIn(
+                newRoleRequestDTO.getPermissions().stream().map(PermissionRequestDTO::getPermissionName).collect(Collectors.toList())
+        ));
+    }
+
 }

@@ -33,8 +33,8 @@ eureka:
     hostname: localhost
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.web.reactive.function.client.WebClient: DEBUG
+    org.springframework.cloud.gateway: INFO
+    org.springframework.web.reactive.function.client.WebClient: INFO
 
 #*** Spring Cloud Gateway Properties (Providing custom path) hence commented ***#
 #spring.cloud.gateway.discovery.locator.enabled=true

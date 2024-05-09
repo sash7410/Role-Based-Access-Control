@@ -3,6 +3,7 @@ package com.example.attendance.web.controller;
 import com.example.attendance.domain.Attendance;
 import com.example.attendance.service.AttendanceService;
 import com.example.attendance.web.dto.requestDto.AttendanceRequestDTO;
+import com.example.attendance.web.dto.responseDto.AttendanceResponseDTO;
 import com.example.attendance.web.dto.responseDto.ResponseDto;
 import com.example.attendance.web.exception.ExceptionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,7 @@ public class AttendanceController {
     public ResponseEntity<ResponseDto> markAttendance(@RequestBody AttendanceRequestDTO attendanceDTO, @RequestParam Long userId) {
         ResponseDto response = new ResponseDto();
         try {
-            Attendance createdAttendance = attendanceService.markAttendance(userId, attendanceDTO);
-            response.setSuccess(createdAttendance);
+            response.setSuccess(attendanceService.markAttendance(userId, attendanceDTO));
             return ResponseEntity.ok(response);
         } catch (SecurityException e) {
             ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), HttpStatus.FORBIDDEN.value(), "Access Denied", e.getMessage());
@@ -43,8 +43,7 @@ public class AttendanceController {
     public ResponseEntity<ResponseDto> updateAttendance(@PathVariable Long attendanceId, @RequestBody AttendanceRequestDTO attendanceDTO, @RequestParam Long userId) {
         ResponseDto response = new ResponseDto();
         try {
-            Attendance updatedAttendance = attendanceService.updateAttendance(userId, attendanceId, attendanceDTO);
-            response.setSuccess(updatedAttendance);
+            response.setSuccess(attendanceService.updateAttendance(userId, attendanceId, attendanceDTO));
             return ResponseEntity.ok(response);
         } catch (SecurityException e) {
             ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), HttpStatus.FORBIDDEN.value(), "Access Denied", e.getMessage());
@@ -57,7 +56,7 @@ public class AttendanceController {
     public ResponseEntity<ResponseDto> getAllAttendance(@RequestParam Long userId) {
         ResponseDto response = new ResponseDto();
         try {
-            List<Attendance> attendances = attendanceService.getAllAttendance(userId);
+            List<AttendanceResponseDTO> attendances = attendanceService.getAllAttendance(userId);
             response.setSuccess(attendances);
             return ResponseEntity.ok(response);
         } catch (SecurityException e) {
