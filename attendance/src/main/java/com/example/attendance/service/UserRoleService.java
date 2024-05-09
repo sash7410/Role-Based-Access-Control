@@ -1,17 +1,15 @@
 package com.example.attendance.service;
 
-import com.example.attendance.domain.Attendance;
-import com.example.attendance.repository.AttendanceRepository;
+import com.example.attendance.web.dto.responseDto.ResponseDto;
+import com.example.attendance.web.exception.ExceptionResponse;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 
 @Service
@@ -23,18 +21,53 @@ public class UserRoleService {
     public Set<String> getPermissionsForUser(Long userId) {
         // Fetch the user from the User Management Service
         String url = "http://localhost:8090/users/" + userId;
-        User user = restTemplate.getForObject(url, User.class);
+        ResponseEntity<ResponseDto> responseEntity = restTemplate.getForEntity(url, ResponseDto.class);
 
-        // Extract permissions from the user's roles
-        Set<String> permissions = new HashSet<>();
-        if (user != null) {
-            permissions = user.getRoles().stream()
-                    .flatMap(role -> role.getPermissions().stream())
-                    .map(Permission::getPermissionName)
-                    .collect(Collectors.toSet());
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            ResponseDto responseDto = responseEntity.getBody();
+            if (responseDto != null && responseDto.getSuccess() != null) {
+                Object successObject = responseDto.getSuccess();
+                if (successObject instanceof Map) {
+                    Map<String, Object> successMap = (Map<String, Object>) successObject;
+                    User user = new User();
+                    user.setUserId(((Number) successMap.get("userId")).longValue());
+                    user.setUsername((String) successMap.get("username"));
+                    List<Map<String, Object>> rolesMaps = (List<Map<String, Object>>) successMap.get("roles");
+                    Set<Role> roles = new HashSet<>();
+                    for (Map<String, Object> roleMap : rolesMaps) {
+                        Role role = new Role();
+                        role.setRoleId(((Number) roleMap.get("roleId")).longValue());
+                        role.setName((String) roleMap.get("name"));
+                        List<Map<String, Object>> permissionsMaps = (List<Map<String, Object>>) roleMap.get("permissions");
+                        Set<Permission> permissions = new HashSet<>();
+                        for (Map<String, Object> permissionMap : permissionsMaps) {
+                            Permission permission = new Permission();
+                            permission.setPermissionId(((Number) permissionMap.get("permissionId")).longValue());
+                            permission.setPermissionName((String) permissionMap.get("permissionName"));
+                            permissions.add(permission);
+                        }
+                        role.setPermissions(permissions);
+                        roles.add(role);
+                    }
+                    user.setRoles(roles);
+                    Set<String> permissions = new HashSet<>();
+                    for (Role role : user.getRoles()) {
+                        for (Permission permission : role.getPermissions()) {
+                            permissions.add(permission.getPermissionName());
+                        }
+                    }
+
+                    return permissions;
+                } else {
+                    throw new IllegalStateException("Success field is not of type Map.");
+                }
+            } else {
+                throw new IllegalStateException("Success field is empty in the response.");
+            }
+        } else {
+            ExceptionResponse error = Objects.requireNonNull(responseEntity.getBody()).getError();
+            throw new IllegalStateException("Error occurred: " + error.getMessage());
         }
-
-        return permissions;
     }
 }
 @Setter

@@ -1,7 +1,7 @@
 #*** Spring Application Properties ***#
 server:
   port: 8765
-#*** Spring Cloud Gateway Routing to remove prefix service name from all API ***#
+
 spring:
   application:
     name: api-gateway-service
@@ -9,27 +9,32 @@ spring:
     gateway:
       routes:
         - id: User-service
-          uri: lb://USER-SERVICE
+          uri: lb://User-service  # Ensure this matches the application name of your user service
           predicates:
-            - Path=/users/**,/user-groups/**
-        - id: group-service
-          uri: lb://attendance-service
+            - Path=/users/**
+        - id: Attendance-service
+          uri: lb://attendance-service  # Ensure this matches the application name of your attendance service
           predicates:
-            - Path=/attendance/**,/attendance-roles/**
-        - id: role-service
-          uri: lb://ROLE-SERVICE
+            - Path=/attendance/**
+        - id: Role-service
+          uri: lb://role-service  # Ensure this matches the application name of your role service
           predicates:
-            - Path=/roles/**
+            - Path=/roles-permissions/**
     discovery:
-      enabled: true
+      enabled: true  # Enables discovery client integration
 
 eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
   instance:
     hostname: localhost
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka/
-
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive.function.client.WebClient: DEBUG
 
 #*** Spring Cloud Gateway Properties (Providing custom path) hence commented ***#
 #spring.cloud.gateway.discovery.locator.enabled=true
