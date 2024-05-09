@@ -4,6 +4,8 @@ import com.example.role.domain.Permission;
 import com.example.role.domain.Role;
 import com.example.role.repository.PermissionRepository;
 import com.example.role.repository.RoleRepository;
+import com.example.role.web.dto.requestDto.PermissionRequestDTO;
+import com.example.role.web.dto.requestDto.RoleRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,22 +26,18 @@ public class RolePermissionService {
     private PermissionRepository permissionRepository;
 
     @Transactional
-    public Role createRole(Role role) {
-        Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(
-                role.getPermissions().stream().map(Permission::getPermissionId).collect(Collectors.toList())
-        ));
-        role.setPermissions(permissions);
+    public Role createRole(RoleRequestDTO roleRequestDTO) {
+        Role role = mapRequestDTOToRole(roleRequestDTO);
         return roleRepository.save(role);
     }
 
     @Transactional
-    public Optional<Role> updateRole(Long roleId, Role newRoleData) {
-        Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(
-                newRoleData.getPermissions().stream().map(Permission::getPermissionId).collect(Collectors.toList())
-        ));
-
+    public Optional<Role> updateRole(Long roleId, RoleRequestDTO newRoleRequestDTO) {
         return roleRepository.findById(roleId).map(role -> {
-            role.setName(newRoleData.getName());
+            role.setName(newRoleRequestDTO.getName());
+            Set<Permission> permissions = new HashSet<>(permissionRepository.findAllById(
+                    newRoleRequestDTO.getPermissionIds().stream().map(Permission::getPermissionId).collect(Collectors.toList())
+            ));
             role.setPermissions(permissions);
             return roleRepository.save(role);
         });
@@ -53,12 +51,15 @@ public class RolePermissionService {
         return roleRepository.findAll();
     }
 
-    public void deleteRole(Long roleId) {
+    public Role deleteRole(Long roleId) {
+        Role role = roleRepository.findById(roleId).orElseThrow(() -> new IllegalArgumentException("Role not found"));
         roleRepository.deleteById(roleId);
+        return role;
     }
 
     @Transactional
-    public Permission createPermission(Permission permission) {
+    public Permission createPermission(PermissionRequestDTO permissionRequestDTO) {
+        Permission permission = mapRequestDTOToPermission(permissionRequestDTO);
         return permissionRepository.save(permission);
     }
 
@@ -71,15 +72,32 @@ public class RolePermissionService {
     }
 
     @Transactional
-    public Optional<Permission> updatePermission(Long permissionId, Permission newPermission) {
+    public Optional<Permission> updatePermission(Long permissionId, PermissionRequestDTO permissionRequestDTO) {
         return permissionRepository.findById(permissionId).map(permission -> {
-            permission.setPermissionName(newPermission.getPermissionName());
+            permission.setPermissionName(permissionRequestDTO.getPermissionName());
             return permissionRepository.save(permission);
         });
     }
 
     @Transactional
-    public void deletePermission(Long permissionId) {
+    public Permission deletePermission(Long permissionId) {
+        Permission permission = permissionRepository.findById(permissionId).orElseThrow(() -> new IllegalArgumentException("Permission not found"));
         permissionRepository.deleteById(permissionId);
+        return permission;
+    }
+
+    // Helper methods to map DTOs to entities
+    private Role mapRequestDTOToRole(RoleRequestDTO roleRequestDTO) {
+        Role role = new Role();
+        role.setName(roleRequestDTO.getName());
+        role.setPermissions(new HashSet<>(permissionRepository.findAllById(
+                roleRequestDTO.getPermissionIds().stream().map(Permission::getPermissionId).collect(Collectors.toList()))));
+        return role;
+    }
+
+    private Permission mapRequestDTOToPermission(PermissionRequestDTO permissionRequestDTO) {
+        Permission permission = new Permission();
+        permission.setPermissionName(permissionRequestDTO.getPermissionName());
+        return permission;
     }
 }

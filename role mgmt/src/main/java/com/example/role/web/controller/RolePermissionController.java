@@ -3,10 +3,16 @@ package com.example.role.web.controller;
 import com.example.role.domain.Permission;
 import com.example.role.domain.Role;
 import com.example.role.service.RolePermissionService;
+import com.example.role.web.dto.requestDto.PermissionRequestDTO;
+import com.example.role.web.dto.requestDto.RoleRequestDTO;
+import com.example.role.web.dto.responseDto.ResponseDto;
+import com.example.role.web.exception.ExceptionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,65 +23,135 @@ public class RolePermissionController {
     @Autowired
     private RolePermissionService rolePermissionService;
 
-    // Role Management
     @PostMapping("/roles")
-    public ResponseEntity<Role> createRole(@RequestBody Role role) {
-        Role createdRole = rolePermissionService.createRole(role);
-        return ResponseEntity.ok(createdRole);
+    public ResponseEntity<ResponseDto> createRole(@RequestBody RoleRequestDTO roleRequestDTO) {
+        ResponseDto response = new ResponseDto();
+        try {
+            Role createdRole = rolePermissionService.createRole(roleRequestDTO);
+            response.setSuccess(createdRole);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error, try again", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/roles/{roleId}")
-    public ResponseEntity<Role> getRoleById(@PathVariable Long roleId) {
+    public ResponseEntity<ResponseDto> getRoleById(@PathVariable Long roleId) {
+        ResponseDto response = new ResponseDto();
         Optional<Role> role = rolePermissionService.getRoleById(roleId);
-        return role.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (role.isPresent()) {
+            response.setSuccess(role.get());
+            return ResponseEntity.ok(response);
+        } else {
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.NOT_FOUND.value(), "Role not found", "Role not found"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @GetMapping("/roles")
-    public ResponseEntity<List<Role>> getAllRoles() {
+    public ResponseEntity<ResponseDto> getAllRoles() {
+        ResponseDto response = new ResponseDto();
         List<Role> roles = rolePermissionService.getAllRoles();
-        return ResponseEntity.ok(roles);
+        response.setSuccess(roles);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/roles/{roleId}")
-    public ResponseEntity<Role> updateRole(@PathVariable Long roleId, @RequestBody Role role) {
-        Optional<Role> updatedRole = rolePermissionService.updateRole(roleId, role);
-        return updatedRole.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ResponseDto> updateRole(@PathVariable Long roleId, @RequestBody RoleRequestDTO roleRequestDTO) {
+        ResponseDto response = new ResponseDto();
+        try {
+            Optional<Role> updatedRole = rolePermissionService.updateRole(roleId, roleRequestDTO);
+            if (updatedRole.isPresent()) {
+                response.setSuccess(updatedRole.get());
+                return ResponseEntity.ok(response);
+            } else {
+                response.setError(new ExceptionResponse(new Date(), HttpStatus.NOT_FOUND.value(), "Role not found", "Role not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error, try again", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @DeleteMapping("/roles/{roleId}")
-    public ResponseEntity<Void> deleteRole(@PathVariable Long roleId) {
-        rolePermissionService.deleteRole(roleId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ResponseDto> deleteRole(@PathVariable Long roleId) {
+        ResponseDto response = new ResponseDto();
+        try{
+            response.setSuccess(rolePermissionService.deleteRole(roleId));
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e){
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.NOT_FOUND.value(), "Role not found", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
-    // Permission Management
     @PostMapping("/permissions")
-    public ResponseEntity<Permission> createPermission(@RequestBody Permission permission) {
-        Permission createdPermission = rolePermissionService.createPermission(permission);
-        return ResponseEntity.ok(createdPermission);
+    public ResponseEntity<ResponseDto> createPermission(@RequestBody PermissionRequestDTO permissionRequestDTO) {
+        ResponseDto response = new ResponseDto();
+        try {
+            Permission createdPermission = rolePermissionService.createPermission(permissionRequestDTO);
+            response.setSuccess(createdPermission);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error, try again", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/permissions/{permissionId}")
-    public ResponseEntity<Permission> getPermissionById(@PathVariable Long permissionId) {
+    public ResponseEntity<ResponseDto> getPermissionById(@PathVariable Long permissionId) {
+        ResponseDto response = new ResponseDto();
         Optional<Permission> permission = rolePermissionService.getPermissionById(permissionId);
-        return permission.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (permission.isPresent()) {
+            response.setSuccess(permission.get());
+            return ResponseEntity.ok(response);
+        } else {
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.NOT_FOUND.value(), "Permission not found", "Permission not found"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @GetMapping("/permissions")
-    public ResponseEntity<List<Permission>> getAllPermissions() {
+    public ResponseEntity<ResponseDto> getAllPermissions() {
+        ResponseDto response = new ResponseDto();
         List<Permission> permissions = rolePermissionService.getAllPermissions();
-        return ResponseEntity.ok(permissions);
+        response.setSuccess(permissions);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/permissions/{permissionId}")
-    public ResponseEntity<Permission> updatePermission(@PathVariable Long permissionId, @RequestBody Permission permission) {
-        Optional<Permission> updatedPermission = rolePermissionService.updatePermission(permissionId, permission);
-        return updatedPermission.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ResponseDto> updatePermission(@PathVariable Long permissionId, @RequestBody PermissionRequestDTO permissionRequestDTO) {
+        ResponseDto response = new ResponseDto();
+        try {
+            Optional<Permission> updatedPermission = rolePermissionService.updatePermission(permissionId, permissionRequestDTO);
+            if (updatedPermission.isPresent()) {
+                response.setSuccess(updatedPermission.get());
+                return ResponseEntity.ok(response);
+            } else {
+                response.setError(new ExceptionResponse(new Date(), HttpStatus.NOT_FOUND.value(), "Permission not found", "Permission not found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error, try again", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @DeleteMapping("/permissions/{permissionId}")
-    public ResponseEntity<Void> deletePermission(@PathVariable Long permissionId) {
-        rolePermissionService.deletePermission(permissionId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ResponseDto> deletePermission(@PathVariable Long permissionId) {
+
+        ResponseDto response = new ResponseDto();
+        try{
+            response.setSuccess(rolePermissionService.deletePermission(permissionId));
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e){
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.NOT_FOUND.value(), "Permission not found", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
+
 }

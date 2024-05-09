@@ -1,4 +1,4 @@
-package com.example.role.web.dto;
+package com.example.role.web.dto.responseDto;
 
 import com.example.role.web.exception.ExceptionResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
