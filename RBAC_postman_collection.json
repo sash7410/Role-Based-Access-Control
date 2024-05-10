@@ -143,15 +143,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"dummy\",\n    \"permissionIds\": [\n        {\n            \"permissionId\": 7,\n            \"permissionName\": \"dummy\"\n        }\n    ]\n}"
+							"raw": "{\n    \"name\": \"dummy3\",\n        \"permissions\": [\n            {\n                \"permissionName\": \"update_attendance\"\n            },\n            {\n                \"permissionName\": \"update_user\"\n            },\n            {\n                \"permissionName\": \"create_user\"\n            },\n            {\n                \"permissionName\": \"mark_attendance\"\n            },\n            {\n                \"permissionName\": \"delete_user\"\n            },\n            {\n                \"permissionName\": \"view_attendance\"\n            }\n        ]\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/roles",
+							"raw": "http://localhost:8765/roles-permissions/roles",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"roles"
@@ -193,19 +193,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Administrator\",\n        \"permissionIds\": [\n            {\n                \"permissionId\": 1,\n                \"permissionName\": \"update_attendance\"\n            },\n            {\n                \"permissionId\": 4,\n                \"permissionName\": \"update_user\"\n            },\n            {\n                \"permissionId\": 3,\n                \"permissionName\": \"create_user\"\n            },\n            {\n                \"permissionId\": 2,\n                \"permissionName\": \"mark_attendance\"\n            },\n            {\n                \"permissionId\": 5,\n                \"permissionName\": \"delete_user\"\n            },\n            {\n                \"permissionId\": 6,\n                \"permissionName\": \"view_attendance\"\n            }\n        ]\n}"
+							"raw": "{\n    \"name\": \"dummy\",\n        \"permissions\": [\n            {\n                \"permissionName\": \"update_attendance\"\n            },\n            {\n                \"permissionName\": \"update_user\"\n            },\n            {\n                \"permissionName\": \"create_user\"\n            },\n            {\n                \"permissionName\": \"mark_attendance\"\n            },\n            {\n                \"permissionName\": \"delete_user\"\n            },\n            {\n                \"permissionName\": \"view_attendance\"\n            }\n        ]\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/roles/1",
+							"raw": "http://localhost:8765/roles-permissions/roles/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"roles",
-								"1"
+								"6"
 							]
 						}
 					},
@@ -390,17 +390,23 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"userId\":1,\"date\":\"2024-05-10\",\"status\":true}"
+							"raw": "{\n    \"userId\": 2,\n    \"date\": \"2024-05-22\",\n    \"status\": true\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/attendance",
+							"raw": "http://localhost:8765/attendance?userId=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8765",
 							"path": [
 								"attendance"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -418,18 +424,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\": 2,\n    \"date\": \"2024-05-11\",\n    \"status\": false\n}"
+							"raw": "{\n    \"userId\": 2,\n    \"date\": \"2024-05-18\",\n    \"status\": false\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/attendance/1?userId=1",
+							"raw": "http://localhost:8765/attendance/5?userId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8765",
 							"path": [
 								"attendance",
-								"1"
+								"5"
 							],
 							"query": [
 								{
