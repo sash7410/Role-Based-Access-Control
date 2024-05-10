@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -33,7 +34,25 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDto> loginUser(@RequestBody UserRequestDTO userRequestDTO) {
+        ResponseDto response = new ResponseDto();
+        try {
+            Optional<User> user = userService.loginUser(userRequestDTO.getUsername(), userRequestDTO.getPassword());
+            if (user.isPresent()) {
+                response.setSuccess(user.get());
+                return ResponseEntity.ok(response);
+            } else {
+                response.setError(new ExceptionResponse(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "Login failed", "Invalid credentials"));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+        } catch (Exception e) {
+            response.setError(new ExceptionResponse(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Login failed", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
     @GetMapping("/{userId}")
     public ResponseEntity<ResponseDto> getUserById(@PathVariable Long userId) {
         ResponseDto response = new ResponseDto();

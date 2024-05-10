@@ -1,3 +1,4 @@
+// src/components/Navigation.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -5,9 +6,11 @@ function Navigation() {
     return (
         <nav>
             <ul>
-                <li><Link to="/">Attendance Records</Link></li>
+                <li><Link to="/">Home</Link></li>
                 <li><Link to="/users">Users</Link></li>
                 <li><Link to="/roles">Roles</Link></li>
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/">Attendance Records</Link></li>
             </ul>
         </nav>
     );

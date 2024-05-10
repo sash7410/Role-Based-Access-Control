@@ -58,4 +58,12 @@ public class UserServiceImpl {
         userRepository.deleteById(userId);
         return user;
     }
+
+    public Optional<User> loginUser(String username, String password) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return user; // Returns the user if credentials are correct
+        }
+        return Optional.empty(); // Returns empty if credentials are incorrect
+    }
 }
