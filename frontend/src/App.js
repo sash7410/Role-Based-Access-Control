@@ -1,39 +1,29 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ErrorBoundary from './components/ErrorBoundary';
-import ProtectedRoute from './components/ProtectedRoute';
-import Navigation from './components/Navigation';
-import AttendanceList from './pages/AttendanceList';
-import EditAttendance from './pages/EditAttendance';
-import UserList from './pages/UserList';
-import RoleList from './pages/RoleList';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { UserProvider } from './contexts/UserContext';
 import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import AttendanceList from './pages/AttendanceList';
+import MarkAttendance from './pages/MarkAttendance';
+import UpdateAttendance from './pages/UpdateAttendance';
+// Other imports...
 
 function App() {
-    const isAuthenticated = true; // This should be dynamically set based on your auth logic
-
     return (
-        <Router>
-            <ErrorBoundary>
-                <Navigation />
+        <UserProvider>
+            <Router>
                 <Routes>
-                    <Route path="/" element={<AttendanceList />} />
-                    <Route path="/edit/:id" element={<EditAttendance />} />
-                    <Route path="/users" element={
-                        <ProtectedRoute isAuthenticated={isAuthenticated}>
-                            <UserList />
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/roles" element={
-                        <ProtectedRoute isAuthenticated={isAuthenticated}>
-                            <RoleList />
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/login" element={<LoginPage onLogin={() => {}} />} />
+                    <Route path="/" element={<Navigate replace to="/login" />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/attendance" element={<AttendanceList />} />
+                    <Route path="/mark-attendance" element={<MarkAttendance />} />
+                    <Route path="/update-attendance/:attendanceId" element={<UpdateAttendance />} />
+                    {/* Other routes */}
                 </Routes>
-            </ErrorBoundary>
-        </Router>
+            </Router>
+        </UserProvider>
     );
 }
 

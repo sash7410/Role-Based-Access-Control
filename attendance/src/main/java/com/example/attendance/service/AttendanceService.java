@@ -4,6 +4,7 @@ import com.example.attendance.domain.Attendance;
 import com.example.attendance.repository.AttendanceRepository;
 import com.example.attendance.web.dto.requestDto.AttendanceRequestDTO;
 import com.example.attendance.web.dto.responseDto.AttendanceResponseDTO;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,13 +48,27 @@ public class AttendanceService {
         return getAttendanceResponseDto(attendance);
     }
 
-    public List<AttendanceResponseDTO> getAllAttendance(Long userId) {
+    public List<AttendanceResponseDTO> getAllAttendance(Long userId) throws NotFoundException {
+        if (!securityMiddleware.hasPermission(userId, "list_attendance")) {
+            throw new SecurityException("Access Denied: Insufficient Permissions");
+        }
+        return getAttendanceResponseDTOS(attendanceRepository.findAll());
+    }
+    public List<AttendanceResponseDTO> getAttendanceForUserID(Long userId) throws NotFoundException {
         if (!securityMiddleware.hasPermission(userId, "view_attendance")) {
             throw new SecurityException("Access Denied: Insufficient Permissions");
         }
+        return getAttendanceResponseDTOS(attendanceRepository.findByUserId(userId));
+    }
+
+    private List<AttendanceResponseDTO> getAttendanceResponseDTOS(List<Attendance> attendanceList) throws NotFoundException {
         List<AttendanceResponseDTO> attendanceResponseDTOList = new ArrayList<>();
-        for (Attendance attendance : attendanceRepository.findAll()) {
+        for (Attendance attendance : attendanceList) {
             attendanceResponseDTOList.add(getAttendanceResponseDto(attendance));
+        }
+        if(attendanceResponseDTOList.isEmpty()){
+            throw new NotFoundException("Access Denied: Insufficient Permissions");
+
         }
         return attendanceResponseDTOList;
     }
