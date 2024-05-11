@@ -1,6 +1,8 @@
 # Role-Based-Access-Control Attendance Management System
 This Attendance Management System is designed to handle role-based access control (RBAC) for users within educational institutions or businesses. The system provides functionalities to manage attendance records, users, roles, and permissions through a web interface.
 
+Youtube Video link : https://youtu.be/Qoo8aF1CxuA
+
 # Getting Started
 # Prerequisites
 - Node.js
@@ -27,8 +29,8 @@ mvn clean install
   mvn spring-boot:run
   ```
 
-
 - Ensure that the server is running on the correct port, typically configured in the application.properties or application.yml files in the Spring Boot project. all the API's can be accesed throgh the gateway port 8765
+- The postman Collection is available in the repository to test the application using postman and to play around with it
 
 # Frontend Setup
 
