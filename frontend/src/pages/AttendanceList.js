@@ -7,20 +7,20 @@ function AttendanceList() {
     const { user } = useUser();
     const [attendances, setAttendances] = useState([]);
     const [error, setError] = useState("");
-    const [loaded, setLoaded] = useState(false);  // State to control display of data
+    const [loaded, setLoaded] = useState(false); 
 
     const fetchAttendance = async (mode) => {
         let url = 'http://localhost:8765/attendance';
         if (mode === "user" && user && user.userId) {
             url += `/user?userId=${user.userId}`;
         } else if (mode === "all") {
-            url += `?userId=${user.userId}`;  // Assuming you need a user ID even when fetching all
+            url += `?userId=${user.userId}`;
         }
 
         try {
             const response = await axios.get(url);
             setAttendances(response.data.success);
-            setLoaded(true);  // Set loaded to true to display the data
+            setLoaded(true);  
         } catch (error) {
             console.error('Error fetching data:', error);
             setError(error.message || "Unknown error fetching attendance");

@@ -6,14 +6,13 @@ import { useUser } from '../contexts/UserContext';
 
 
 function UpdateAttendance() {
-    const { attendanceId } = useParams();  // Using useParams to get the attendanceId from the URL
+    const { attendanceId } = useParams();  
     const [date, setDate] = useState('');
     const [status, setStatus] = useState(false);
     const [message, setMessage] = useState('');
     const { user } = useUser();
 
     useEffect(() => {
-        // Fetch the current details of the attendance to update (optional, for pre-filling form data)
         const fetchCurrentAttendance = async () => {
             try {
                 const response = await axios.get(`http://localhost:8765/attendance/${attendanceId}?userId=${user.userId}`);

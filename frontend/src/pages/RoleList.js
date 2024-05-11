@@ -3,15 +3,15 @@ import axios from 'axios';
 
 function RoleList() {
     const [roles, setRoles] = useState([]);
-    const [error, setError] = useState(""); // Added for handling potential errors
+    const [error, setError] = useState("");
 
     useEffect(() => {
         axios.get('http://localhost:8765/roles-permissions/roles')
             .then(response => {
-                if (response.data.success) { // Check if the success field is present
-                    setRoles(response.data.success); // Assuming success contains the array of roles
+                if (response.data.success) {
+                    setRoles(response.data.success);
                 } else if (response.data.error) {
-                    setError(response.data.error.message); // Handle potential errors
+                    setError(response.data.error.message); 
                 }
             })
             .catch(error => {

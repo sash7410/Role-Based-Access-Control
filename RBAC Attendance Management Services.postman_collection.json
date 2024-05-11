@@ -22,17 +22,46 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"sash\",\n    \"password\": \"secure123\",\n    \"roles\": [\n        {\n            \"roleId\": 2,\n            \"name\": \"Student\"\n        }\n    ]\n}"
+							"raw": "{\n    \"username\": \"random\",\n    \"password\": \"secure123\",\n    \"roles\": [\n        {\n            \"roleId\": 10,\n            \"name\": \"dummy_permission_1\"\n        }\n    ]\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8090/users",
+							"raw": "http://localhost:8765/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8090",
+							"port": "8765",
 							"path": [
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"sash\",\n    \"password\": \"secure123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8765/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"users",
+								"login"
 							]
 						}
 					},
@@ -44,12 +73,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/users/1",
+							"raw": "http://localhost:8765/users/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8090",
+							"port": "8765",
 							"path": [
 								"users",
 								"1"
@@ -73,15 +102,15 @@
 							"raw": "{\n    \"username\": \"reet\",\n    \"password\": \"secure12345\",\n    \"roles\": [\n        {\n            \"roleId\": 3,\n            \"name\": \"Teacher\"\n        }\n    ]\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8090/users/3",
+							"raw": "http://localhost:8765/users/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8090",
+							"port": "8765",
 							"path": [
 								"users",
-								"3"
+								"5"
 							]
 						}
 					},
@@ -93,15 +122,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8090/users/1",
+							"raw": "http://localhost:8765/users/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8090",
+							"port": "8765",
 							"path": [
 								"users",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -143,7 +172,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"dummy3\",\n        \"permissions\": [\n            {\n                \"permissionName\": \"update_attendance\"\n            },\n            {\n                \"permissionName\": \"update_user\"\n            },\n            {\n                \"permissionName\": \"create_user\"\n            },\n            {\n                \"permissionName\": \"mark_attendance\"\n            },\n            {\n                \"permissionName\": \"delete_user\"\n            },\n            {\n                \"permissionName\": \"view_attendance\"\n            }\n        ]\n}"
+							"raw": "{\n    \"name\": \"dummy5\",\n        \"permissions\": [\n            {\n                \"permissionName\": \"dummy_permission\"\n            },\n            {\n                \"permissionName\": \"dummy_permission_1\"\n            },\n            {\n                \"permissionName\": \"create_user\"\n            },\n            {\n                \"permissionName\": \"mark_attendance\"\n            },\n            {\n                \"permissionName\": \"delete_user\"\n            },\n            {\n                \"permissionName\": \"view_attendance\"\n            }\n        ]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8765/roles-permissions/roles",
@@ -166,16 +195,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/roles/1",
+							"raw": "http://localhost:8765/roles-permissions/roles/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"roles",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -193,10 +222,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"dummy\",\n        \"permissions\": [\n            {\n                \"permissionName\": \"update_attendance\"\n            },\n            {\n                \"permissionName\": \"update_user\"\n            },\n            {\n                \"permissionName\": \"create_user\"\n            },\n            {\n                \"permissionName\": \"mark_attendance\"\n            },\n            {\n                \"permissionName\": \"delete_user\"\n            },\n            {\n                \"permissionName\": \"view_attendance\"\n            }\n        ]\n}"
+							"raw": "{\n    \"name\": \"Administrator\",\n            \"permissions\": [\n                {\n                    \"permissionName\": \"mark_attendance\"\n                },\n                {\n                    \"permissionName\": \"delete_user\"\n                },\n                {\n                    \"permissionName\": \"update_attendance\"\n                },\n                {\n                    \"permissionName\": \"update_user\"\n                },\n                {\n                    \"permissionName\": \"view_attendance\"\n                },\n                {\n                    \"permissionName\": \"create_user\"\n                },                \n                {\n                    \"permissionName\": \"list_attendance\"\n                }\n            ]\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8765/roles-permissions/roles/6",
+							"raw": "http://localhost:8765/roles-permissions/roles/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -205,7 +234,7 @@
 							"path": [
 								"roles-permissions",
 								"roles",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -217,16 +246,16 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/roles/1",
+							"raw": "http://localhost:8765/roles-permissions/roles/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"roles",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -264,15 +293,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"permissionName\":\"delete_user\"}"
+							"raw": "            {\n                \"permissionName\": \"dummy_permission_1\"\n            }"
 						},
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/permissions",
+							"raw": "http://localhost:8765/roles-permissions/permissions",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"permissions"
@@ -287,12 +316,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/permissions/1",
+							"raw": "http://localhost:8765/roles-permissions/permissions/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"permissions",
@@ -317,12 +346,12 @@
 							"raw": "{\"permissionName\":\"delete_all_users\"}"
 						},
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/permissions/1",
+							"raw": "http://localhost:8765/roles-permissions/permissions/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"permissions",
@@ -338,16 +367,16 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8100/roles-permissions/permissions/1",
+							"raw": "http://localhost:8765/roles-permissions/permissions/7",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8100",
+							"port": "8765",
 							"path": [
 								"roles-permissions",
 								"permissions",
-								"1"
+								"7"
 							]
 						}
 					},
@@ -424,10 +453,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\": 2,\n    \"date\": \"2024-05-18\",\n    \"status\": false\n}"
+							"raw": "{\n    \"date\": \"2024-05-18\",\n    \"status\": false\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8765/attendance/5?userId=1",
+							"raw": "http://localhost:8765/attendance/11?userId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -435,7 +464,7 @@
 							"port": "8765",
 							"path": [
 								"attendance",
-								"5"
+								"11"
 							],
 							"query": [
 								{
@@ -466,6 +495,32 @@
 								{
 									"key": "userId",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Attendance Records Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/attendance/user?userId=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"attendance",
+								"user"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "5"
 								}
 							]
 						}

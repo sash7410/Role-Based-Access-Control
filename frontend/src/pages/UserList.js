@@ -23,7 +23,7 @@ function UserList() {
                     setError(error.message || "Unknown error fetching user");
                 });
         }
-    }, [user]); // Depend on user context to re-fetch when it updates
+    }, [user]); 
 
     return (
 <div>

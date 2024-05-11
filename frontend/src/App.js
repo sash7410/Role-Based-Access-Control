@@ -7,9 +7,8 @@ import DashboardPage from './pages/DashboardPage';
 import AttendanceList from './pages/AttendanceList';
 import MarkAttendance from './pages/MarkAttendance';
 import UpdateAttendance from './pages/UpdateAttendance';
-import UserList from './pages/UserList';        // Make sure to import UserList
+import UserList from './pages/UserList';
 import RoleList from './pages/RoleList';  
-// Other imports...
 
 function App() {
     return (

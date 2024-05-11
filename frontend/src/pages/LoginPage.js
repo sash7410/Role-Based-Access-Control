@@ -9,13 +9,12 @@ function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Hook for navigating programmatically
-
+    const navigate = useNavigate(); 
     const handleLogin = async (event) => {
         event.preventDefault();
         try {
             const response = await axios.post('http://localhost:8765/users/login', { username, password });
-            setUser(response.data.success); // Set the logged-in user in the context
+            setUser(response.data.success); 
             navigate('/dashboard'); // Redirect to a dashboard or another page
         } catch (error) {
             console.error('Login error:', error);
