@@ -11,9 +11,9 @@ This Attendance Management System is designed to handle role-based access contro
 - MySql - recommend Sequel ACE in mac
 
   Clone the repository:
-```bash
-git clone git@github.com:sash7410/Role-Based-Access-Control.git
-```
+  ```bash
+  git clone git@github.com:sash7410/Role-Based-Access-Control.git
+  ```
 
 # Build the project:
 
@@ -23,9 +23,9 @@ mvn clean install
 
 # Start the project:
 - start by running the eureka server -> role microservice -> user microservice -> attendance microservice -> api gateway as the tables can be automatically created without any problem
-```bash
-mvn spring-boot:run
-```
+  ```bash
+  mvn spring-boot:run
+  ```
 
 
 - Ensure that the server is running on the correct port, typically configured in the application.properties or application.yml files in the Spring Boot project. all the API's can be accesed throgh the gateway port 8765
@@ -33,14 +33,14 @@ mvn spring-boot:run
 # Frontend Setup
 
 - Install dependencies:
-```bash
-npm install
-```
+  ```bash
+  npm install
+  ```
 
 - Start the development server:
-```bash
-npm start
-```
+  ```bash
+  npm start
+  ```
 
 This will launch the frontend application typically at http://localhost:3000.
 
