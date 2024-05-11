@@ -7,6 +7,8 @@ import DashboardPage from './pages/DashboardPage';
 import AttendanceList from './pages/AttendanceList';
 import MarkAttendance from './pages/MarkAttendance';
 import UpdateAttendance from './pages/UpdateAttendance';
+import UserList from './pages/UserList';        // Make sure to import UserList
+import RoleList from './pages/RoleList';  
 // Other imports...
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
                     <Route path="/attendance" element={<AttendanceList />} />
                     <Route path="/mark-attendance" element={<MarkAttendance />} />
                     <Route path="/update-attendance/:attendanceId" element={<UpdateAttendance />} />
+                    <Route path="/users" element={<UserList />} />          // Add route for UserList
+                    <Route path="/roles" element={<RoleList />} />          // Add route for RoleList
                     {/* Other routes */}
                 </Routes>
             </Router>

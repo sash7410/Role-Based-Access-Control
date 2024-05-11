@@ -36,6 +36,7 @@ public class AttendanceService {
 
     @Transactional
     public AttendanceResponseDTO updateAttendance(Long userId, Long attendanceId, AttendanceRequestDTO attendanceDTO) {
+        System.out.println("lol {} {} {}"+ userId +attendanceId +attendanceDTO.toString());
         if (!securityMiddleware.hasPermission(userId, "update_attendance")) {
             throw new SecurityException("Access Denied: Insufficient Permissions");
         }

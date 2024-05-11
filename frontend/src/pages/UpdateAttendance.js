@@ -2,35 +2,36 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useUser } from '../contexts/UserContext';
+
 
 function UpdateAttendance() {
     const { attendanceId } = useParams();  // Using useParams to get the attendanceId from the URL
     const [date, setDate] = useState('');
     const [status, setStatus] = useState(false);
     const [message, setMessage] = useState('');
-    const [userId, setUserId] = useState(1);  // Assuming you have a way to get the userId, set this accordingly
+    const { user } = useUser();
 
     useEffect(() => {
         // Fetch the current details of the attendance to update (optional, for pre-filling form data)
         const fetchCurrentAttendance = async () => {
             try {
-                const response = await axios.get(`http://localhost:8765/attendance/${attendanceId}?userId=${userId}`);
+                const response = await axios.get(`http://localhost:8765/attendance/${attendanceId}?userId=${user.userId}`);
                 const attendance = response.data.success;
                 setDate(attendance.date);
                 setStatus(attendance.status);
             } catch (error) {
-                setMessage('Failed to fetch attendance details!');
+                // setMessage('Failed to fetch attendance details!');
                 console.error('Fetch error:', error);
             }
         };
 
         fetchCurrentAttendance();
-    }, [attendanceId, userId]);
+    }, [attendanceId, user.userId]);
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put(`http://localhost:8765/attendance/${attendanceId}?userId=${userId}`, {
-                userId,  // Ensure this is the correct ID for who is updating the record
+            const response = await axios.put(`http://localhost:8765/attendance/${attendanceId}?userId=${user.userId}`, {
                 date,
                 status
             });

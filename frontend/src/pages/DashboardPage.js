@@ -8,9 +8,8 @@ function DashboardPage() {
             <h1>Dashboard</h1>
             <nav>
                 <ul>
-                    <li><Link to="/attendance">View Attendance</Link></li>
-                    <li><Link to="/users">Users</Link></li>
-                    <li><Link to="/roles">Roles</Link></li>
+                    <li><Link to="/attendance">Attendance</Link></li>
+                    <li><Link to="/users">User Info</Link></li>
                 </ul>
             </nav>
         </div>
